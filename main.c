@@ -12,7 +12,7 @@ static void * pool_counter (void * arg)
 
 int main (int argc, char **argv)
 {
-  iot_threadpool_t * pool = iot_threadpool_alloc (2u, 0u, IOT_THREAD_NO_PRIORITY, IOT_THREAD_NO_AFFINITY);
+  iot_threadpool_t * pool = iot_threadpool_alloc (2u, 0u, IOT_THREAD_NO_PRIORITY);
   counter = 0;
   iot_threadpool_add_work (pool, pool_counter, NULL, IOT_THREAD_NO_PRIORITY);
   iot_threadpool_start (pool);

@@ -143,19 +143,6 @@ static void * iot_threadpool_thread (void * arg)
   return NULL;
 }
 
-static void mutex_init (pthread_mutex_t * mutex)
-{
-  pthread_mutexattr_t attr;
-  pthread_mutexattr_init (&attr);
-#ifndef NDEBUG
-  pthread_mutexattr_settype (&attr, PTHREAD_MUTEX_ERRORCHECK);
-#endif
-  pthread_mutexattr_setprotocol (&attr, PTHREAD_PRIO_INHERIT);
-  pthread_mutex_init (mutex, &attr);
-  pthread_mutexattr_destroy (&attr);
-}
-
-
 iot_threadpool_t * iot_threadpool_alloc (uint16_t threads, uint32_t max_jobs, int default_prio)
 {
   static int pool_id = 0;
@@ -170,7 +157,7 @@ iot_threadpool_t * iot_threadpool_alloc (uint16_t threads, uint32_t max_jobs, in
   pthread_cond_init (&pool->work_cond, NULL);
   pthread_cond_init (&pool->queue_cond, NULL);
   pthread_cond_init (&pool->job_cond, NULL);
-  mutex_init (&pool->mutex);
+  iot_mutex_init (&pool->mutex);
   pthread_cond_init (&pool->cond, NULL);
   for (created = 0; created < threads; created++)
   {
